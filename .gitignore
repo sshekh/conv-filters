@@ -1,0 +1,13 @@
+*.o
+main
+
+# hidden vim swap files
+.*
+
+# big files, ignore tracking
+img_mats/*
+images/*
+out_mats/*
+
+# git update-index --assume-unchanged on data folders
+
