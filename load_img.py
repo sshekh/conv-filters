@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from PIL import Image
 import pylab
 import sys
@@ -10,8 +12,7 @@ if __name__ == "__main__":
         im = np.empty(shape=(shape[1], shape[2], shape[3]))
         for i in range(shape[1]):
             row = f.readline().split()
-            #print(idx, i, len(row), shape[2])
-            assert(len(row) == shape[2])
+            assert(len(row) == shape[2])  # 512
             for j in range(shape[2]):
                 im[i][j] = list(map(float, row[j].split(",")))
         result = Image.fromarray(im.astype(np.uint8))

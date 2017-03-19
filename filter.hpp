@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+// allocate memory for a tensor
 double ***get_tensor(int x, int y, int z) {
   double ***ret = new double**[x];
   for (int i = 0; i < x; i++) {
@@ -16,7 +17,7 @@ double ***get_tensor(int x, int y, int z) {
 
 class filter {
 public:
-  double ***w, b;
+  double ***w, b;     // krenel matrix, bias term
   int window, depth;
   filter(int _window, int _depth) 
     : window(_window), depth(_depth) {
@@ -34,9 +35,16 @@ public:
       }
   }
   ~filter() {
+    for (int i = 0; i < window; ++i) {
+      for (int j = 0; j < window; ++j) {
+        delete[] w[i][j];
+      }
+      delete[] w[i];
+    }
     delete[] w;
   }
 
+  // normalize the tensor
   void normalize() {
     double sum = 0;
     for (int i = 0; i < window; ++i) {

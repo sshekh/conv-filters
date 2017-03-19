@@ -1,10 +1,12 @@
+#!/usr/bin/python
+
 import numpy as np
 from PIL import Image
 import pylab
 import sys
 
-im_names = ["airplane.png", "lena.png",  "fruits.png"]
-gray_imnames = ["barbara.png", "boat.png"]
+im_names = ["airplane.png", "lena.png",  "fruits.png"]  # 512 * 512 * 3
+gray_imnames = ["barbara.png", "boat.png"] # 512 * 512
 
 def append_matrix(filepath, outf):
     img = Image.open(filepath)
