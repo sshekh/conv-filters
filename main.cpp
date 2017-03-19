@@ -5,13 +5,12 @@
 #include "filter.hpp"
 #include "conv2d_layer.hpp"
 
+using namespace std;
+
 const int W_SIZE = 3;     // kernel window size
 // edge detection matrix
 // TODO try different matrices?
 const double edge_detect[3][3] = { {0, 1, 0}, {1, -4, 1}, {0, 1, 0} };
-
-using namespace std;
-
 vector<filter*> filters;
 
 void push_filter(int idx) {     

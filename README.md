@@ -7,15 +7,15 @@
 
 ## Code structure
   * filter.hpp defines a 3-D convolutinal kernel class with a bias term. It contains some helper functions to allocate memory to tensors and to normalize them.
-  * conv2d\_layer.hpp defines a convolutional layer. One can set the stride and zero-padding of the filter in this. Also, dimentions of the output layer are calculated
+  * conv2d\_layer.hpp defines a convolutional layer. One can set the stride and zero-padding of the filter in this. Also, dimensions of the output layer are calculated
     automatically.
-  * conv2d method takes as argument a 3-D data volume and a list of filters (one filter generates one activation map). For example, applying a 3 x 3 x 3 filter on a 512 x 512 x 3 image (with 1 zero padding and 1 stride) will generate an 2-D output layer of 512 x 512. See image (taken from course [cs231n](http://cs231n.stanford.edu/syllabus.html)).
+  * conv2d method takes as argument a 3-D data volume and a list of filters (one filter generates one activation map). For example, applying a 3 x 3 x 3 filter on a 512 x 512 x 3 image (with 1 zero padding and 1 stride) will generate an 2-D output layer of 512 x 512. See example (taken from course [cs231n](http://cs231n.stanford.edu/syllabus.html)).
   ![One filter](images/one_map.png)
   * List of filters would make the output layer. Shape of output layer as well as the data block is returned by the function conv2d.
   ![Many filter](images/multi_map.png)
-  * main.cpp runs some example filters on a batch of 3 images. It generates 3 filters, one as an edge detector for each color channel (see push\_function). Then defines
+  * main.cpp runs some example filters on a batch of 3 images. It generates 3 filters, one as an edge detector for each color channel (see push\_filter). Then defines
     a convolution layer with given params and applies the layer to each of the images. It then writes the output to a different file.
-  * make\_mats.py and load\_img.py are used to generate images\*->\*matrices and vice versa.
+  * make\_mats.py and load\_img.py are used to generate images\-matrices and vice versa.
 
 ```cpp
 for (int id = 0; id < num_images; ++id) {
