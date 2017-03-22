@@ -51,4 +51,8 @@ python make_mats.py img_mats/out.dat
 
 ```bash
 python load_img.py img_mats/filter_out.dat out_mats
+```
+
+## Example output
+Input ![Input image](images/lena.png), Output (edge detector convolution matrix (see main.cpp)) ![Output image](out_mats/1.bmp)
 
