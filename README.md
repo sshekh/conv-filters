@@ -55,6 +55,7 @@ python load_img.py img_mats/filter_out.dat out_mats
 
 ## Results
 Images taken from [USC Viterbi image dataset](http://sipi.usc.edu/database/database.php?volume=misc)
+
 Input images               |  Output images
 :-------------------------:|:-------------------------:
 ![](./images/color/lena.png) | ![](./out_mats/1.bmp)
