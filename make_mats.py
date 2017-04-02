@@ -4,9 +4,11 @@ import numpy as np
 from PIL import Image
 import pylab
 import sys
+import os
 
-im_names = ["airplane.png", "lena.png",  "fruits.png"]  # 512 * 512 * 3
-gray_imnames = ["barbara.png", "boat.png"] # 512 * 512
+dirname = 'images/'
+#im_names = ["airplane.png", "lena.png",  "fruits.png"]  # 512 * 512 * 3
+#gray_imnames = ["barbara.png", "boat.png"] # 512 * 512
 
 def append_matrix(filepath, outf):
     img = Image.open(filepath)
@@ -20,8 +22,10 @@ def append_matrix(filepath, outf):
 
 if __name__ == "__main__":
     f = open(sys.argv[1], "w")
-    dirname = 'images/'
-    f.write("%d 512 512 3\n" % (len(im_names))) # image tensor
-    for im in im_names:
-        append_matrix(dirname + im, f)
+    depth = 3   # 3 for color, 1 for grey
+    foldername = dirname + 'color/' # grey for grey 
+    filenames = os.listdir(foldername)
+    f.write("%d 512 512 %d\n" % (len(filenames), depth)) # image tensor dimensions
+    for filename in filenames:
+        append_matrix(foldername + filename, f)
 

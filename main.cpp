@@ -7,26 +7,35 @@
 
 using namespace std;
 
-const int W_SIZE = 3;     // kernel window size
-// edge detection matrix
-// TODO try different matrices?
-const double edge_detect[3][3] = { {0, 1, 0}, {1, -4, 1}, {0, 1, 0} };
+int w_size, bias;     // kernel window size
+double** kernel; // image kernel 
 vector<filter*> filters;
 
 void push_filter(int idx) {     
   // make edge detector for color idx 
-  double ***ed = get_tensor(3, 3, 3); 
-  for (int i = 0; i < 3; ++i) {
-    for (int j = 0; j < 3; ++j) {
-      ed[i][j][idx] = edge_detect[i][j];
+  double ***ed = get_tensor(w_size, w_size, 3); 
+  for (int i = 0; i < w_size; ++i) {
+    for (int j = 0; j < w_size; ++j) {
+      ed[i][j][idx] = kernel[i][j];
     }
   }
-  filter *f = new filter(ed, 3, W_SIZE);
+  filter *f = new filter(ed, w_size, 3, bias);
   f->normalize();
   filters.push_back(f);
 }
 
 int main(int argc, char *argv[]) {
+
+  //  input the kernel matrix
+  cin >> w_size >> bias;
+  kernel = new double*[w_size]; 
+  for (int i = 0; i < w_size; i++) {
+    kernel[i] = new double[w_size];
+    for (int j = 0; j < w_size; j++) {
+      cin >> kernel[i][j]; 
+    }
+  }
+
   push_filter(0); // R
   push_filter(1); // G
   push_filter(2); // B
@@ -52,7 +61,7 @@ int main(int argc, char *argv[]) {
   ofile << num_images << " "; 
   cerr << num_images << " "; 
   
-  conv_layer clayer(width, height, depth, W_SIZE, stride, padding, filters.size()); 
+  conv_layer clayer(width, height, depth, w_size, stride, padding, filters.size()); 
   double ***input;
   input = get_tensor(width, height, depth); 
   
