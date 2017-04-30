@@ -41,10 +41,10 @@ g++  -std=gnu++11 -O2 main.cpp -o main
 python make_mats.py img_mats/out.dat
 ```
 
-* Run the convolutional filter.
+* Run the convolutional filter (read from standard input)
 
 ```bash
-./main img_mats/out.dat img_mats/filter_out.dat
+./main img_mats/out.dat img_mats/filter_out.dat < filter.txt
 ```
 
 * Make output images from matrices
