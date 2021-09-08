@@ -34,15 +34,15 @@ public:
         out_depth = n_filters;
     }
 
-    ~conv_layer() {}
+    virtual ~conv_layer() = default;
 
     // Applies convolutional filters in filters to input volume x
     // x treated as in_width * in_height * in_depth 
     // assumed n_filters elements in filters vector
     // returns shape of the output volume and pointer to the memory block
-    std::tuple<int, int, int, double ***> 
-        conv2d(double ***x, const std::vector<filter*> &filters) {
-        double ***y = get_tensor(out_width, out_height, out_depth);
+    std::tuple<int, int, int, tensor> 
+        conv2d(tensor x, /*std::vector<filter> filters*/ const std::vector<filter*> &filters) {
+        tensor y(out_width, matrix(out_height, v(out_depth)));
         assert (filters.size() == n_filters);
 
     for (int k = 0; k < n_filters; ++k) {     // k_th activation map

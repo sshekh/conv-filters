@@ -3,53 +3,71 @@
 #include <cstdio>
 #include <vector>
 #include <execution>
+#include <thread>
 
 #include "filter.hpp"
 #include "conv2d_layer.hpp"
 
 using namespace std;
 
-void test() {
-    vector<long double> x {
-        0.1, 0.05, 0.6, 0.0, 0.05,
-        0.1, 0.0, 0.1, 0.0, 0.0
-    };
-
-    for_each(std::execution::par, x.begin(), x.end(),
-        [](auto v) { std::cout << v << ' '; });
+void job() {
+ 
 }
 
 int main(int argc, char *argv[]) {
-
-    int w_size, bias;     // kernel window size
-    double** kernel; // image kernel 
-    vector<filter*> filters;
-
-    // test();
-    //  input the kernel matrix
+    int w_size, bias; 
     cin >> w_size >> bias;
-    kernel = new double*[w_size]; 
-    for (int i = 0; i < w_size; i++) {
-        kernel[i] = new double[w_size];
-        for (int j = 0; j < w_size; j++) {
-            cin >> kernel[i][j]; 
-        }
-    }
+
+    /**
+     * Core per N threads
+     */ 
+    // unsigned nb_threads_hint = std::thread::hardware_concurrency();
+    // unsigned nb_threads = nb_threads_hint ? 16 : (nb_threads_hint);
+    // std::vector< std::thread > my_threads(nb_threads);
+
+    // unsigned batch_size = nb_elements / nb_threads;
+    // unsigned batch_remainder = nb_elements % nb_threads;
+
+    /**
+     * input the image kernel matrix
+     */ 
+    matrix kernel(w_size, v(w_size));
+    trans_tensor([](auto v) -> auto {
+                cin >> v;
+                return v;
+            }, kernel);
+
+    // for_tensor([](auto v) {
+    //             cout << v << endl;
+    //         }, kernel);
+
+    std::vector<filter*> filters;
 
     array<unsigned int, 3> rgb = {0, 1, 2};
     for_each(std::execution::par, rgb.begin(), rgb.end(),
         [w_size, bias, kernel, &filters](auto idx) {
             // make edge detector for color idx 
-            double ***ed = get_tensor(w_size, w_size, 3);
+            tensor ed(w_size, matrix(w_size, v(3)));
+
             for (int i = 0; i < w_size; ++i) {
                 for (int j = 0; j < w_size; ++j) {
                     ed[i][j][idx] = kernel[i][j];
                 }
             }
+            // std::unique_ptr<filter> f(new filter(ed, w_size, 3, bias));
+
+            // filter f(ed, w_size, 3, bias);
+            // f.normalize();
+            // filters.at(idx) = f;
             filter *f = new filter(ed, w_size, 3, bias);
             f->normalize();
             filters.push_back(f);
         });
+
+        // cout << "test" << endl;
+        // for_each(filters.begin(), filters.end(), [](auto v) {
+        //     cout << v.b << endl;
+        // });
 
     if (argc < 3) {
         cerr << "usage <input_data file name> <output file name>" << endl;
@@ -75,8 +93,8 @@ int main(int argc, char *argv[]) {
 
     conv_layer clayer(width, height, depth, w_size, stride, 
                                 padding, filters.size()); 
-    double ***input;
-    input = get_tensor(width, height, depth); 
+    tensor input(width, matrix(height, v(depth)));
+
 
     for (int id = 0; id < num_images; ++id) {
 
@@ -90,10 +108,17 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+        // trans_matrix([ifile](auto v) -> auto {
+        //     ifile >> v;
+        //     if (ifile.peek() == ',')
+        //         ifile.ignore();
+        //     return v;
+        // }, kernel);
+
         auto output = clayer.conv2d(input, filters);
-        double ***out_volume = get<3>(output);
         int o_width = get<0>(output), o_height = 
                 get<1>(output), o_depth = get<2>(output);
+        tensor out_volume = get<3>(output);
         if (id == 0) {
             // print image dimensions only the first time
             ofile << o_width << " " << o_height 
@@ -114,6 +139,8 @@ int main(int argc, char *argv[]) {
     }
     ifile.close();
     ofile.close();
+
+    // std::for_each(my_threads.begin(), my_threads.end(), std::mem_fn(&std::thread::join));
 
     return 0; 
 }
