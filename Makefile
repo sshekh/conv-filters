@@ -6,7 +6,7 @@ DEBUG=-g
 
 all: main
 
-main: conv2d_layer.o filter.o  main.cpp
+main: conv2d_layer.o filter.o NDGrid.o main.cpp
 	$(CC) $(LIB) $(CFLAGS) main.cpp -o main $(LDFLAGS)
 
 conv2d_layer.o: conv2d_layer.hpp filter.o
@@ -15,8 +15,8 @@ conv2d_layer.o: conv2d_layer.hpp filter.o
 filter.o: filter.hpp
 	$(CC) $(CFLAGS) filter.hpp -o filter.o
 
-# Cuboid.o: Cuboid.hpp
-# 	$(CC) $(CFLAGS) Cuboid.hpp -o Cuboid.o
+NDGrid.o: NDGrid.hpp
+	$(CC) $(CFLAGS) NDGrid.hpp -o NDGrid.o
 
 clean:
 	rm *.o main
