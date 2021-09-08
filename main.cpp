@@ -2,6 +2,8 @@
 #include <fstream>
 #include <cstdio>
 #include <vector>
+#include <execution>
+
 #include "filter.hpp"
 #include "conv2d_layer.hpp"
 
@@ -12,20 +14,31 @@ double** kernel; // image kernel
 vector<filter*> filters;
 
 void push_filter(int idx) {     
-  // make edge detector for color idx 
-  double ***ed = get_tensor(w_size, w_size, 3); 
-  for (int i = 0; i < w_size; ++i) {
-    for (int j = 0; j < w_size; ++j) {
-      ed[i][j][idx] = kernel[i][j];
+    // make edge detector for color idx 
+    double ***ed = get_tensor(w_size, w_size, 3); 
+    for (int i = 0; i < w_size; ++i) {
+        for (int j = 0; j < w_size; ++j) {
+            ed[i][j][idx] = kernel[i][j];
+        }
     }
-  }
-  filter *f = new filter(ed, w_size, 3, bias);
-  f->normalize();
-  filters.push_back(f);
+    filter *f = new filter(ed, w_size, 3, bias);
+    f->normalize();
+    filters.push_back(f);
+}
+
+void test() {
+    vector<long double> x {
+        0.1, 0.05, 0.6, 0.0, 0.05,
+        0.1, 0.0, 0.1, 0.0, 0.0
+    };
+
+    for_each(std::execution::par, x.begin(), x.end(),
+        [](auto v) { std::cout << v << ' '; });
 }
 
 int main(int argc, char *argv[]) {
 
+  test();
   //  input the kernel matrix
   cin >> w_size >> bias;
   kernel = new double*[w_size]; 

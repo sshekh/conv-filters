@@ -1,10 +1,12 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include <vector>
 #include <cassert>
 #include <tuple>
 #include <algorithm>
+#include <vector>
+#include <execution>
+
 #include "filter.hpp"
 
 class conv_layer {
@@ -70,4 +72,4 @@ public:
 
 };
 
-#endif
+#endif // LAYER_H
