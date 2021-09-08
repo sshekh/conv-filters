@@ -1,5 +1,5 @@
-CC=g++ 
-CFLAGS= -std=gnu++11 -O2
+CC=g++-10
+CFLAGS= -std=gnu++20 -O3
 DEBUG=-g
 
 all: main
