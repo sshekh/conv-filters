@@ -11,3 +11,6 @@ out_mats/*
 
 # git update-index --assume-unchanged on data folders
 
+*tags
+.bmp
+.dat

@@ -5,6 +5,20 @@
 * Python Imaging Library (PIL) was used to convert images into RGB matrices and to convert filtered matrices back to images. PIL was preferred over other C++ libraries 
   due to ease of use.
 
+## Install
+
+Install g++ latest on ubuntu version.
+
+```bash
+g++-10
+```
+
+Install python libraries.
+
+```bash
+$ pip3 install numpy image matplotlib
+```
+
 ## Code structure
   * filter.hpp defines a 3-D convolutinal kernel class with a bias term. It contains some helper functions to allocate memory to tensors and to normalize them.
   * conv2d\_layer.hpp defines a convolutional layer. One can set the stride and zero-padding of the filter in this. Also, dimensions of the output layer are calculated
